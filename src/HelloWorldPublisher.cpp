@@ -149,30 +149,8 @@ bool HelloWorldPublisher::init(
     wqos.resource_limits().allocated_samples = 20;
     wqos.reliable_writer_qos().times.heartbeatPeriod.seconds = 2;
     wqos.reliable_writer_qos().times.heartbeatPeriod.nanosec = 200 * 1000 * 1000;
-    // wqos.reliability().kind = RELIABLE_RELIABILITY_QOS;
+    wqos.reliability().kind = RELIABLE_RELIABILITY_QOS;
 
-    wqos.reliability().kind = ASYNCHRONOUS_PUBLISH_MODE;
-    
-
-    PublisherAttributes wparam;
-    wparam.topic.topicKind = NO_KEY;
-    wparam.topic.topicDataType = "DataTranSeq";
-    // wparam.topic.topicName = "HelloWorldTopicTCP";
-    wparam.topic.topicName = topicname;
-    wparam.topic.historyQos.kind = KEEP_LAST_HISTORY_QOS;
-    wparam.topic.historyQos.depth = 30;
-    wparam.topic.resourceLimitsQos.max_samples = 50;
-    wparam.topic.resourceLimitsQos.allocated_samples = 20;
-    wparam.times.heartbeatPeriod.seconds = 2;
-    wparam.times.heartbeatPeriod.nanosec = 200 * 1000 * 1000;
-    wparam.qos.m_reliability.kind = RELIABLE_RELIABILITY_QOS;
-    // wparam.qos.m_reliability.kind = RELIABLE_RELIABILITY_QOS;//+
-    wparam.qos.m_publishMode.kind = ASYNCHRONOUS_PUBLISH_MODE;//+
-    wparam.historyMemoryPolicy = rtps::PREALLOCATED_WITH_REALLOC_MEMORY_MODE;//+
-    publisher_ = Domain::createPublisher(participant_, wparam, (PublisherListener*)&listener_);
-
-    wqos
-    .historyMemoryPolicy = rtps::PREALLOCATED_WITH_REALLOC_MEMORY_MODE;//+
 
     writer_ = publisher_->create_datawriter(topic_, wqos, &listener_);
 
